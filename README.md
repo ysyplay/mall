@@ -1,1 +1,1 @@
-mall_learning 这里是分之2
+mall_learning
