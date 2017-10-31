@@ -1,1 +1,1 @@
-mall_learning 2
+mall_learning 分之2
