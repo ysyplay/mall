@@ -1,1 +1,1 @@
-mall_learning 分之1
+mall_learning 分之1可以合并了
