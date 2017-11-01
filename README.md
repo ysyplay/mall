@@ -1,1 +1,1 @@
-mall_learning 分之2
+mall_learning 分之2跟新要求合并
