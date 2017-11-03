@@ -23,7 +23,6 @@
         </encoder>
     </appender>
 
-
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--<File>d:/mmalllog/error.log</File>-->
         <File>/developer/apache-tomcat-7.0.73/logs/error.log</File>
@@ -68,7 +67,6 @@
     <!--<logger name="java.sql.PreparedStatement" level="DEBUG">-->
         <!--<appender-ref ref="console"/>-->
     <!--</logger>-->
-
 
     <root level="DEBUG">
         <appender-ref ref="console"/>
