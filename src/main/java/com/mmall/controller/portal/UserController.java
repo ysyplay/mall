@@ -22,13 +22,12 @@ public class UserController
     @Autowired
     private IUserService iUserService;
 
-
+    //登录
     @RequestMapping(value = "login.do",method = RequestMethod.POST)
     @ResponseBody//返回值序列化成json
     public ServerResponse<User> login(String username, String password, HttpSession session)
     {
         //service->mybatis->dao
-        System.out.print(username+"       "+password);
         ServerResponse<User> response = iUserService.login(username,password);
         if (response.isSuccess())
         {
@@ -36,4 +35,27 @@ public class UserController
         }
         return response;
     }
+    //退出登录
+    @RequestMapping(value = "logout.do",method = RequestMethod.GET)
+    @ResponseBody//返回值序列化成json
+    public  ServerResponse<String> logout(HttpSession session)
+    {
+        session.removeAttribute(Const.CURRENT_USER);
+        return  ServerResponse.createBySuccess();
+    }
+    //注册
+    @RequestMapping(value = "registr.do",method = RequestMethod.POST)
+    @ResponseBody//返回值序列化成json
+    public ServerResponse<String> registr(User user)
+    {
+        return iUserService.register(user);
+    }
+
+    @RequestMapping(value = "checkValid.do",method = RequestMethod.GET)
+    @ResponseBody//返回值序列化成json
+    public ServerResponse<String> checkValid(String str,String type)
+    {
+      return iUserService.checkValid(str,type);
+    }
+
 }
