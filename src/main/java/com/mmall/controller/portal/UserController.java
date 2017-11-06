@@ -50,12 +50,45 @@ public class UserController
     {
         return iUserService.register(user);
     }
-
+    //校验
     @RequestMapping(value = "checkValid.do",method = RequestMethod.GET)
     @ResponseBody//返回值序列化成json
     public ServerResponse<String> checkValid(String str,String type)
     {
       return iUserService.checkValid(str,type);
+    }
+    //获取用户信息
+    @RequestMapping(value = "getUserInfo.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<User> getUserInfo(HttpSession session)
+    {
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user!=null)
+        {
+            return ServerResponse.createBySuccess(user);
+        }
+        return ServerResponse.createByErrorMessage("用户信息获取失败");
+    }
+    //忘记密码
+    @RequestMapping(value = "forgetGetQusetion.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> forgetGetQusetion(String username)
+    {
+        return iUserService.selectQuestion(username);
+    }
+    //校验问题答案
+    @RequestMapping(value = "forgetCheckAnswer.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> forgetCheckAnswer(String username,String question,String answer)
+    {
+        return iUserService.checkAnswer(username, question, answer);
+    }
+    //忘记密码中的重置密码
+    @RequestMapping(value = "forgetRestPassword.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> forgetRestPassword(String username,String passwordNew,String forgetToken)
+    {
+        return iUserService.forgetRestPassword(username, passwordNew, forgetToken);
     }
 
 }

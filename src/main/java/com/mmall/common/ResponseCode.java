@@ -17,7 +17,6 @@ public enum  ResponseCode
         this.code = code;
         this.desc = desc;
     }
-
     public int getCode(){
         return code;
     }
