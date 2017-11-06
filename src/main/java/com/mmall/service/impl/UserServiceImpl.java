@@ -121,7 +121,6 @@ public class UserServiceImpl implements IUserService
     {
         if (org.apache.commons.lang3.StringUtils.isBlank(forgetToken))
         {
-            System.out.print(forgetToken);
             return ServerResponse.createByErrorMessage("无Token");
         }
         ServerResponse validResponse = this.checkValid(username,Const.USERNAME);
