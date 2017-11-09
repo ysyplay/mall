@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.UUID;
 
 /**
@@ -146,6 +147,20 @@ public class UserServiceImpl implements IUserService
             return ServerResponse.createByErrorMessage("token错误,请重新校验问题");
         }
         return ServerResponse.createByErrorMessage("修改密码失败");
+    }
+    public ServerResponse<String> restPassword(User user, String passwordOld, String passwordNew)
+    {
+        int resultCount = userMapper.checkPassword(user.getId(),MD5Util.MD5EncodeUtf8(passwordOld));
+        if (resultCount == 0)
+        {
+            return ServerResponse.createByErrorMessage("旧密码错误");
+        }
+        user.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
+        int updateCount = userMapper.updateByPrimaryKeySelective(user);
+        if(updateCount > 0){
+            return ServerResponse.createBySuccessMessage("密码更新成功");
+        }
+        return ServerResponse.createByErrorMessage("密码更新失败");
     }
 
     /**
