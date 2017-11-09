@@ -148,4 +148,24 @@ public class UserServiceImpl implements IUserService
         }
         return ServerResponse.createByErrorMessage("修改密码失败");
     }
+
+    public ServerResponse<String> restPassword(User user,String passwordOld,String passwordNew)
+    {
+        int resultCount = userMapper.checkPassword(user.getId(),MD5Util.MD5EncodeUtf8(passwordOld));
+        System.out.print(resultCount);
+        if (resultCount ==0)
+        {
+            return ServerResponse.createByErrorMessage("密码错误");
+        }
+        user.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
+        resultCount = userMapper.updateByPrimaryKeySelective(user);
+        if (resultCount == 0)
+        {
+            return ServerResponse.createByErrorMessage("密码设置失败");
+        }
+        return ServerResponse.createBySuccessMessage("密码设置成功");
+    }
+
+
+
 }

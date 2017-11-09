@@ -180,4 +180,9 @@
 
   </update>
 
+  <select id="checkPassword" resultType="int" parameterType="map">
+    SELECT COUNT(1) FROM mmall_user WHERE id = #{userid}
+    and password =  #{password}
+  </select>
+
 </mapper>

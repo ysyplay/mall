@@ -90,5 +90,17 @@ public class UserController
     {
         return iUserService.forgetRestPassword(username, passwordNew, forgetToken);
     }
+    //登录状态中的重置密码
+    @RequestMapping(value = "restPassword.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> restPassword(HttpSession session,String passwordOld,String passwordNew)
+    {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+        {
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        return iUserService.restPassword(user,passwordOld,passwordNew);
+    }
 
 }
