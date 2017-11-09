@@ -4,11 +4,14 @@ import com.mmall.common.ServerResponse;
 import com.mmall.dao.CategoryMapper;
 import com.mmall.pojo.Category;
 import com.mmall.service.ICategoryService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by runa on 2017/11/9.
@@ -18,6 +21,8 @@ public class CategoryServiceImpl implements ICategoryService
 {
     @Autowired
     private CategoryMapper categoryMapper;
+
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     public ServerResponse addCategory(String categoryName,Integer parentId)
     {
@@ -57,6 +62,20 @@ public class CategoryServiceImpl implements ICategoryService
             return ServerResponse.createBySuccessMessage("更新添加品类成功");
         }
         return ServerResponse.createByErrorMessage("更新添加品类失败");
+    }
+
+    /**
+     * 获取下一级分类
+     */
+    public ServerResponse<List<Category>> getChildrenParallelCategory(Integer parentId)
+    {
+        List<Category> categoryList = categoryMapper.selectChildrenParallelCategory(parentId);
+        if (CollectionUtils.isEmpty(categoryList))
+        {
+            logger.info("未找到当前分类的子分类");
+            return ServerResponse.createBySuccessMessage("未找到当前分类的子分类");
+        }
+        return ServerResponse.createBySuccess(categoryList);
     }
 
 }
