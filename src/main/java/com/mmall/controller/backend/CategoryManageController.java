@@ -106,7 +106,4 @@ public class CategoryManageController
         }
     }
 
-    public static void main(String[] args) {
-
-    }
 }
