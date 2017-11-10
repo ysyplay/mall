@@ -105,4 +105,8 @@ public class CategoryManageController
             return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
         }
     }
+
+    public static void main(String[] args) {
+
+    }
 }
