@@ -107,10 +107,8 @@ public class CategoryServiceImpl implements ICategoryService
         List<Category> categoryList = categoryMapper.selectChildrenParallelCategory(categoryId);
         for(Category categoryItem : categoryList)
         {
-             //123
             findChildCategory(categorySet,categoryItem.getId());
         }
         return;
     }
-
 }
