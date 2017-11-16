@@ -87,9 +87,6 @@ public class Category {
         this.updateTime = updateTime;
     }
 
-    //control+回车
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,7 +94,9 @@ public class Category {
 
         Category category = (Category) o;
 
-        return id != null ? id.equals(category.id) : category.id == null;
+        if (id != null ? !id.equals(category.id) : category.id != null) return false;
+
+        return true;
     }
 
     @Override

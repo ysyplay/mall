@@ -1,5 +1,6 @@
 package com.mmall.service.impl;
 
+import com.google.common.collect.Interner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mmall.common.ServerResponse;
@@ -82,33 +83,36 @@ public class CategoryServiceImpl implements ICategoryService
     }
 
     /**
-     * 获取本节点及以下所有子节点ID
+     * 递归查找本节点Id所有子Id
      */
-    public ServerResponse getCategoryIdAndDeepChildrenCategory(Integer categoryId)
+    public ServerResponse selectCategoryAndChildrenById(Integer categoryId)
     {
-        Set<Category> categorySet = Sets.newHashSet();
-        findChildCategory(categorySet,categoryId);
-        List<Integer> categoryIdList = Lists.newArrayList();
-        if(categoryId != null){
-            for(Category categoryItem : categorySet){
-                categoryIdList.add(categoryItem.getId());
-            }
-        }
-        return ServerResponse.createBySuccess(categoryIdList);
+       Set<Category> categorySet = Sets.newHashSet();
+       categorySet = findChildCategory(categorySet,categoryId);
+
+       List<Integer> categoryIDList = Lists.newArrayList();
+       if (categoryId != null)
+       {
+           for (Category categoryItem :categorySet)
+           {
+               categoryIDList.add(categoryItem.getId());
+           }
+       }
+       return ServerResponse.createBySuccess(categoryIDList);
     }
 
-    private void findChildCategory (Set<Category> categorySet,Integer categoryId)
+    private Set<Category> findChildCategory(Set<Category> categorySet,Integer categoryId)
     {
-       Category category = categoryMapper.selectByPrimaryKey(categoryId);
-       if (category!=null)
-       {
-           categorySet.add(category);
-       }
-        List<Category> categoryList = categoryMapper.selectChildrenParallelCategory(categoryId);
-        for(Category categoryItem : categoryList)
+         Category category = categoryMapper.selectByPrimaryKey(categoryId);
+         if (category !=null)
+         {
+             categorySet.add(category);
+         }
+         List<Category> categoryList = categoryMapper.selectChildrenParallelCategory(categoryId);
+        for (Category categoryItem: categoryList)
         {
             findChildCategory(categorySet,categoryItem.getId());
         }
-        return;
+        return categorySet;
     }
 }

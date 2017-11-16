@@ -88,7 +88,7 @@ public class CategoryManageController
 
     @RequestMapping(value="getCategoryIdAndDeepChildrenCategory.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse getCategoryIdAndDeepChildrenCategory(HttpSession session,  @RequestParam(value = "categoryId",defaultValue = "0") int categoryId)
+    public ServerResponse getCategoryIdAndDeepChildrenCategory(HttpSession session,int categoryId)
     {
 
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -98,12 +98,11 @@ public class CategoryManageController
         }
         if (iUserService.checkAdminRole(user).isSuccess())
         {
-            return iCategoryService.getCategoryIdAndDeepChildrenCategory(categoryId);
+            return iCategoryService.selectCategoryAndChildrenById(categoryId);
         }
         else
         {
             return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
         }
     }
-
 }
