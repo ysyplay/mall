@@ -1,6 +1,7 @@
 package com.mmall.service.impl;
 
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
@@ -56,10 +57,49 @@ public class CartServiceImpI implements ICartService
         }
         return this.list(userId);
     }
-    public ServerResponse<CartVo> list (Integer userId){
+
+    public ServerResponse<CartVo> update(Integer userId, Integer productId, Integer count)
+    {
+        if(productId == null || count == null)
+        {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Cart cart = cartMapper.selectCartByUserIdProductId(userId, productId);
+        if (cart!=null)
+        {
+            cart.setQuantity(count);
+            cartMapper.updateByPrimaryKeySelective(cart);
+        }
+        return this.list(userId);
+    }
+
+    public ServerResponse<CartVo> deleteProduct(Integer userId,String productIds)
+    {
+         List<String> productList = Splitter.on(",").splitToList(productIds);
+         if (CollectionUtils.isEmpty(productList))
+         {
+             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+         }
+        cartMapper.deleteByUserIdProductIds(userId,productList);
+        return this.list(userId);
+    }
+
+    public ServerResponse<Integer> getCount(Integer userId)
+    {
+        return ServerResponse.createBySuccess(cartMapper.selectCountByUserId(userId));
+    }
+
+
+
+
+
+
+    public ServerResponse<CartVo> list (Integer userId)
+    {
         CartVo cartVo = this.getCartVoLimit(userId);
         return ServerResponse.createBySuccess(cartVo);
     }
+
     private CartVo getCartVoLimit(Integer userId)
     {
         CartVo cartVo = new CartVo();
@@ -120,14 +160,15 @@ public class CartServiceImpI implements ICartService
         cartVo.setCartProductVoList(cartProductVoList);
         cartVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
         cartVo.setAllChecked(this.getAllCheckedStatus(userId));
-        return null;
+        return cartVo;
     }
-    private boolean getAllCheckedStatus(Integer userId){
-        if(userId == null){
+    private boolean getAllCheckedStatus(Integer userId)
+    {
+        if(userId == null)
+        {
             return false;
         }
         return cartMapper.selectCartProductCheckedStatusByUserId(userId) == 0;
-
     }
 
 }

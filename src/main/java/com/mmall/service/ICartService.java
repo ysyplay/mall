@@ -10,5 +10,7 @@ public interface ICartService
 {
     ServerResponse<CartVo> add(Integer userId, Integer productId, Integer count);
     ServerResponse<CartVo> list (Integer userId);
-
+    ServerResponse<CartVo> update(Integer userId, Integer productId, Integer count);
+    ServerResponse<CartVo> deleteProduct(Integer userId,String productIds);
+    ServerResponse<Integer> getCount(Integer userId);
 }
