@@ -147,7 +147,6 @@
     </if>
   </delete>
 
-
   <select id="selectCountByUserId" resultType="int" parameterType="int">
     SELECT
      IFNULL(SUM(quantity),0)
