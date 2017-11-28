@@ -7,7 +7,8 @@ import java.util.Set;
 /**
  * Created by runa on 2017/11/3.
  */
-public class Const {
+public class Const
+{
     public static final String CURRENT_USER = "currentUser";
     public static final String EMAIL = "email";
     public static final String USERNAME = "username";
@@ -39,15 +40,12 @@ public class Const {
             this.code = code;
             this.value = value;
         }
-
         public String getValue() {
             return value;
         }
-
         public int getCode() {
             return code;
         }
-
     }
 
 }

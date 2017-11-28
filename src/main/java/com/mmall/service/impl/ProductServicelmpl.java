@@ -197,7 +197,6 @@ public class ProductServicelmpl implements IProductService
         return ServerResponse.createBySuccess(productDetailVo);
     }
 
-
     public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize,String orderBy)
     {
         if(StringUtils.isBlank(keyword) && categoryId == null)
