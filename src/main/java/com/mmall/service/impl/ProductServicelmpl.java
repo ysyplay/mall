@@ -85,7 +85,7 @@ public class ProductServicelmpl implements IProductService
         {
             return ServerResponse.createBySuccess("修改产品销售状态成功");
         }
-        return ServerResponse.createByErrorMessage("修改铲平销售状态失败");
+        return ServerResponse.createByErrorMessage("修改产品销售状态失败");
     }
 
     public ServerResponse<ProductDetailVo> manageProductDetail(Integer productId){
@@ -145,7 +145,6 @@ public class ProductServicelmpl implements IProductService
         return ServerResponse.createBySuccess(pageInfo);
 
     }
-
     private ProductListVo assembleProductListVo(Product product){
         ProductListVo productListVo = new ProductListVo();
         productListVo.setId(product.getId());
@@ -176,7 +175,6 @@ public class ProductServicelmpl implements IProductService
         pageResult.setList(productListVoList);
         return ServerResponse.createBySuccess(pageResult);
     }
-
 
     public ServerResponse<ProductDetailVo>getProductDetail(Integer productId)
     {
