@@ -237,12 +237,12 @@ public class OrderServiceImpl implements IOrderService
         payInfo.setPlatformStatus(tradeStatus);
 
         payInfoMapper.insert(payInfo);
-
         return  ServerResponse.createBySuccess();
     }
 
 
-    public ServerResponse queryOrderPayStatus(Integer userId,Long orderNo){
+    public ServerResponse queryOrderPayStatus(Integer userId,Long orderNo)
+    {
         Order order = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
         if(order == null){
             return ServerResponse.createByErrorMessage("用户没有该订单");
