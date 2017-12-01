@@ -91,9 +91,6 @@ public class OrderServiceImpl implements IOrderService
     private ShippingMapper shippingMapper;
 
 
-
-
-
     public ServerResponse createOrder(Integer userId,Integer shippingId)
     {
         List<Cart> cartList = cartMapper.selectCheckedCartByUserId(userId);
