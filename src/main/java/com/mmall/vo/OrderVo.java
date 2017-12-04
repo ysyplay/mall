@@ -19,7 +19,6 @@ public class OrderVo {
 
     private Integer status;
 
-
     private String statusDesc;
 
     private String paymentTime;

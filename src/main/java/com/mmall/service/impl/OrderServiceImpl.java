@@ -95,10 +95,6 @@ public class OrderServiceImpl implements IOrderService
     {
         List<Cart> cartList = cartMapper.selectCheckedCartByUserId(userId);
         ServerResponse serverResponse = this.getCartOrderItem(userId,cartList);
-        if (CollectionUtils.isEmpty(cartList))
-        {
-            return ServerResponse.createByErrorMessage("购物车为空");
-        }
         if (!serverResponse.isSuccess())
         {
             return serverResponse;
@@ -112,7 +108,10 @@ public class OrderServiceImpl implements IOrderService
         {
             return ServerResponse.createByErrorMessage("生成订单错误");
         }
-
+        if (CollectionUtils.isEmpty(orderItemList))
+        {
+            return ServerResponse.createByErrorMessage("购物车为空");
+        }
         for (OrderItem orderItem:orderItemList)
         {
             orderItem.setOrderNo(order.getOrderNo());
@@ -140,7 +139,7 @@ public class OrderServiceImpl implements IOrderService
         {
            OrderItem orderItem = new OrderItem();
            Product product = productMapper.selectByPrimaryKey(cartItem.getProductId());
-           if (Const.ProductStatusEnum.ON_SALE.getCode()!=product.getStatus())
+           if (Const.ProductStatusEnum.ON_SALE.getCode()!= product.getStatus())
            {
                return ServerResponse.createByErrorMessage("产品"+product.getName()+"不是在线售卖状态");
            }
@@ -149,7 +148,6 @@ public class OrderServiceImpl implements IOrderService
             {
                 return ServerResponse.createByErrorMessage("产品"+product.getName()+"库存不足");
             }
-
             orderItem.setUserId(userId);
             orderItem.setProductId(product.getId());
             orderItem.setProductName(product.getName());
@@ -168,7 +166,6 @@ public class OrderServiceImpl implements IOrderService
         for (OrderItem orderItem:orderItemList)
         {
             payment = BigDecimalUtil.add(payment.doubleValue(),orderItem.getTotalPrice().doubleValue());
-            System.out.print("**********"+orderItem.getTotalPrice().doubleValue());
         }
         return payment;
     }
@@ -271,6 +268,39 @@ public class OrderServiceImpl implements IOrderService
         orderItemVo.setCreateTime(DateTimeUtil.dateToStr(orderItem.getCreateTime()));
         return orderItemVo;
     }
+
+
+    public ServerResponse cancelOrder(Integer userId,Long orderNo)
+    {
+        Order order = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
+        if (order == null)
+        {
+            return ServerResponse.createByErrorMessage("该用户此订单不存在");
+        }
+        if (order.getStatus() != Const.OrderStatusEnum.NO_PAY.getCode())
+        {
+            return ServerResponse.createByErrorMessage("已付款，无法取消订单");
+        }
+        Order updateOrder = new Order();
+        updateOrder.setId(order.getId());
+        updateOrder.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
+
+        int row = orderMapper.updateByPrimaryKeySelective(updateOrder);
+        if (row>0)
+        {
+            return ServerResponse.createBySuccess("取消订单成功");
+        }
+        return ServerResponse.createByErrorMessage("取消订单失败");
+    }
+
+
+
+
+
+
+
+
+
 
 
 

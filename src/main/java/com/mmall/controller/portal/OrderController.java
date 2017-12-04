@@ -47,6 +47,18 @@ public class OrderController
         return iOrderService.createOrder(user.getId(),shippingId);
     }
 
+    @RequestMapping("cancel.do")
+    @ResponseBody
+    public ServerResponse cancel(HttpSession session,Long orderNo)
+    {
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+        {
+            return ServerResponse.createByErrorMessage("用户未登陆");
+        }
+        return iOrderService.cancelOrder(user.getId(),orderNo);
+    }
+
 
 
 
