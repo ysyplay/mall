@@ -38,7 +38,8 @@ public class ShippingServiceImpl implements IShippingService
     public ServerResponse del(Integer userId,  Integer shippingId)
     {
         int resultCount = shippingMapper.deleteByShippingIdUserId(userId,shippingId);
-        if(resultCount > 0){
+        if(resultCount > 0)
+            {
             return ServerResponse.createBySuccess("删除地址成功");
         }
         return ServerResponse.createByErrorMessage("删除地址失败");
@@ -61,4 +62,5 @@ public class ShippingServiceImpl implements IShippingService
         PageInfo pageInfo = new PageInfo(shippingList);
         return ServerResponse.createBySuccess(pageInfo);
     }
+
 }
