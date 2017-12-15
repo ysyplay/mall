@@ -114,7 +114,6 @@ public class ProductServicelmpl implements IProductService
         productDetailVo.setStock(product.getStock());
 
         productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.happymmall.com/"));
-
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
         if(category == null){
             productDetailVo.setParentCategoryId(0);//默认根节点
@@ -143,7 +142,6 @@ public class ProductServicelmpl implements IProductService
         PageInfo pageInfo = new PageInfo(productList);
         pageInfo.setList(productListVoList);
         return ServerResponse.createBySuccess(pageInfo);
-
     }
     private ProductListVo assembleProductListVo(Product product){
         ProductListVo productListVo = new ProductListVo();

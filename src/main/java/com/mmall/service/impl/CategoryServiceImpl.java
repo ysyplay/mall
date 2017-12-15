@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.CategoryMapper;
 import com.mmall.pojo.Category;
+import com.mmall.service.ICartService;
 import com.mmall.service.ICategoryService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +31,8 @@ public class CategoryServiceImpl implements ICategoryService
 
     public ServerResponse addCategory(String categoryName,Integer parentId)
     {
-        if (parentId == null || StringUtils.isBlank(categoryName)) {
+        if (parentId == null || StringUtils.isBlank(categoryName))
+        {
             return ServerResponse.createByErrorMessage("添加品类参数错误");
         }
         Category category = new Category();
@@ -61,7 +63,7 @@ public class CategoryServiceImpl implements ICategoryService
         category.setId(categoryId);
         category.setName(categoryName);
         int rowCount = categoryMapper.updateByPrimaryKeySelective(category);
-        if (rowCount>0)
+        if (rowCount > 0)
         {
             return ServerResponse.createBySuccessMessage("更新添加品类成功");
         }
@@ -83,7 +85,7 @@ public class CategoryServiceImpl implements ICategoryService
     }
 
     /**
-     * 递归查找本节点Id所有子Id
+     * * 递归查找本节点Id所有子Id
      */
     public ServerResponse selectCategoryAndChildrenById(Integer categoryId)
     {
@@ -104,15 +106,15 @@ public class CategoryServiceImpl implements ICategoryService
     private Set<Category> findChildCategory(Set<Category> categorySet,Integer categoryId)
     {
          Category category = categoryMapper.selectByPrimaryKey(categoryId);
-         if (category !=null)
+         if (category != null)
          {
              categorySet.add(category);
          }
          List<Category> categoryList = categoryMapper.selectChildrenParallelCategory(categoryId);
-        for (Category categoryItem: categoryList)
-        {
-            findChildCategory(categorySet,categoryItem.getId());
-        }
+         for (Category categoryItem: categoryList)
+         {
+             findChildCategory(categorySet,categoryItem.getId());
+         }
         return categorySet;
     }
 }
