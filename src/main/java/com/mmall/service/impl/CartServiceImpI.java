@@ -40,6 +40,11 @@ public class CartServiceImpI implements ICartService
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         Cart cart = cartMapper.selectCartByUserIdProductId(userId,productId);
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if (product.getStock()<count)
+        {
+            return ServerResponse.createByErrorMessage("库存不足");
+        }
         if (cart == null)
         {
            Cart cart1 = new Cart();

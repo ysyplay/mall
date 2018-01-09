@@ -67,10 +67,9 @@ public class Main {
     private void dumpResponse(AlipayResponse response) {
         if (response != null) {
             log.info(String.format("code:%s, msg:%s", response.getCode(), response.getMsg()));
-            if (StringUtils.isNotEmpty(response.getSubCode())) {
+            if (StringUtils.isNotEmpty(response.getSubCode()))
                 log.info(String.format("subCode:%s, subMsg:%s", response.getSubCode(),
-                    response.getSubMsg()));
-            }
+                        response.getSubMsg()));
             log.info("body:" + response.getBody());
         }
     }
